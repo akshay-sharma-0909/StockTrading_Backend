@@ -12,7 +12,7 @@ const AuthRouter = require("./Routers/AuthRouter");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-const port = 5000;
+const port =  process.env.PORT||5000;
 const uri = process.env.MONGO_URL;
 
 Main()
