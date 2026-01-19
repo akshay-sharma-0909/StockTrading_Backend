@@ -30,19 +30,19 @@ async function Main(){
 };
 
 app.use(cors({
-  origin: [process.env.LANDING_PAGE_URL,
-    process.env.DASHBOARD_URL,
+  origin: ["http://localhost:3002",
+    "http://localhost:3003",
   ] , 
   credentials: true                 // Allow cookies / auth headers
 }));
-
+app.use(cookieParser());
 app.use(bodyParser.json());
 
 app.use("/auth", AuthRouter);
 
  
 
-app.use(cookieParser());
+
 
 
 /*
