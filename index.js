@@ -1,49 +1,45 @@
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const {HoldingsModel} = require("./model/HoldingsModel");
-const {PositionsModel} = require("./model/PositionsModel");
-const {OrdersModel} = require("./model/OrdersModel");
+const { HoldingsModel } = require("./model/HoldingsModel");
+const { PositionsModel } = require("./model/PositionsModel");
+const { OrdersModel } = require("./model/OrdersModel");
 const cookieParser = require("cookie-parser");
 
 const AuthRouter = require("./Routers/AuthRouter");
 
-
-
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-
 const port = 5000;
-const uri= process.env.MONGO_URL;
+const uri = process.env.MONGO_URL;
 
-Main() 
-.then((res)=>{
+Main()
+  .then((res) => {
     console.log("Connected to Database");
-}).catch((error)=>{
+  })
+  .catch((error) => {
     console.log(error);
-})
+  });
 
-async function Main(){
-    await mongoose.connect(uri)
-};
+async function Main() {
+  await mongoose.connect(uri);
+}
 
-app.use(cors({
-  origin: ["http://localhost:3002",
-    "http://localhost:3003",
-  ] , 
-  credentials: true                 // Allow cookies / auth headers
-}));
+app.use(
+  cors({
+    origin: [
+      "https://stock-trading-landing-page.onrender.com",
+      "https://stock-trading-dashboard-6rpx.onrender.com",
+    ],
+    credentials: true, // Allow cookies / auth headers
+  }),
+);
 app.use(cookieParser());
 app.use(bodyParser.json());
 
 app.use("/auth", AuthRouter);
-
- 
-
-
-
 
 /*
 app.get("/addHoldings" ,async(req,res)=>{
@@ -216,36 +212,28 @@ tempPosition.forEach((item) => {
 });
 */
 
-
-app.get("/allHoldings", async(req, res)=>{
-     let allHoldings = await  HoldingsModel.find({});
-      res.json(allHoldings) ;
+app.get("/allHoldings", async (req, res) => {
+  let allHoldings = await HoldingsModel.find({});
+  res.json(allHoldings);
 });
 
-
-app.get("/allPosition" , async(req,res)=>{
-    let allPositions = await PositionsModel.find({});
-    res.json(allPositions);
+app.get("/allPosition", async (req, res) => {
+  let allPositions = await PositionsModel.find({});
+  res.json(allPositions);
 });
 
-app.post("/newOrder", async(req, res)=>{
-    let newOrder =  await new OrdersModel({
-        name:req.body.name,
-        qty: req.body.qty,
-        price: req.body.price,
-        mode: req.body.mode
-    });
-    newOrder.save();
+app.post("/newOrder", async (req, res) => {
+  let newOrder = await new OrdersModel({
+    name: req.body.name,
+    qty: req.body.qty,
+    price: req.body.price,
+    mode: req.body.mode,
+  });
+  newOrder.save();
 
-
-    res.send("Done!");
+  res.send("Done!");
 });
 
-app.listen( port ,()=>{
-
-    console.log("server  running ",port);
-   
-
-
+app.listen(port, () => {
+  console.log("server  running ", port);
 });
-
