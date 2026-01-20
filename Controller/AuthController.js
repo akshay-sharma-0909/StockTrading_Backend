@@ -62,7 +62,7 @@ const login = async (req, res) => {
     console.log(error);
     return res
       .status(500)
-      .json({ message: "Interal server error", success: false , redirectUrl:"http://localhost:3001"});
+      .json({ message: "Interal server error", success: false });
   }
 };
 module.exports = { signup , login};
