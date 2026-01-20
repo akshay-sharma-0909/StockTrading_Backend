@@ -211,11 +211,26 @@ tempPosition.forEach((item) => {
 
 });
 */
-
+/*
 app.get("/allHoldings", async (req, res) => {
   let allHoldings = await HoldingsModel.find({});
   res.json(allHoldings);
 });
+*/
+app.get("/allHoldings", async (req, res) => {
+  try {
+    const allHoldings = await HoldingsModel.find({});
+    res.status(200).json(allHoldings);
+  } catch (error) {
+    console.error("Fetch holdings error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error fetching holdings",
+      error: error.message,
+    });
+  }
+});
+
 
 app.get("/allPosition", async (req, res) => {
   let allPositions = await PositionsModel.find({});
